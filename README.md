@@ -38,4 +38,4 @@ GO library for strip JSON comments from input.
 Library normally working with *NIX `\n` and Windows `\r\n` line endings.
 
 ## License
-(MIT)[./LICENSE.MD]
+[MIT](./LICENSE.MD)
