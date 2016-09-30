@@ -1,4 +1,5 @@
 # go-jsoncommentstrip
+[![Build Status](https://travis-ci.org/RaveNoX/go-jsoncommentstrip.svg?branch=master)](https://travis-ci.org/RaveNoX/go-jsoncommentstrip)
 [![GoDoc](https://godoc.org/github.com/RaveNoX/go-jsoncommentstrip?status.svg)](https://godoc.org/github.com/RaveNoX/go-jsoncommentstrip)
 
 GO library for strip JSON comments from input.
