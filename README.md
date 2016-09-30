@@ -38,5 +38,12 @@ GO library for strip JSON comments from input.
 ## Line Endings Support
 Library normally working with *NIX `\n` and Windows `\r\n` line endings.
 
+## Commandline Tool
+
+```bash
+$ go get github.com/RaveNoX/go-jsoncommentstrip/cmd/jsoncommentstrip
+$ cat json_with_comments.json | jsoncommentstrip
+```
+
 ## License
 [MIT](./LICENSE.MD)
