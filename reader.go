@@ -14,7 +14,7 @@ type reader struct {
 	state readerState
 }
 
-func (reader *reader) checkForError(buff []byte) (count int, err error) {
+func (reader *reader) checkForPreviousError(buff []byte) (count int, err error) {
 	if reader.err != nil {
 		buffLen := len(buff)
 		err = reader.err
@@ -44,7 +44,7 @@ func (reader *reader) checkForError(buff []byte) (count int, err error) {
 	return
 }
 
-func writeToBuffer(buff []byte, pos int, value string) (count int) {
+func writeStringToBuffer(buff []byte, pos int, value string) (count int) {
 	for _, b := range []byte(value) {
 		buff[pos+count] = b
 		count++
@@ -53,7 +53,7 @@ func writeToBuffer(buff []byte, pos int, value string) (count int) {
 	return
 }
 
-func (reader *reader) readRuneString() (value string, err error) {
+func (reader *reader) readRuneAsString() (value string, err error) {
 	var char rune
 	char, _, err = reader.input.ReadRune()
 
@@ -66,7 +66,7 @@ func (reader *reader) readRuneString() (value string, err error) {
 func (reader *reader) fillBuff() (err error) {
 	if reader.buff == "" {
 		var buff string
-		buff, err = reader.readRuneString()
+		buff, err = reader.readRuneAsString()
 		if err == nil {
 			reader.buff = buff
 		}
@@ -92,7 +92,7 @@ func (reader *reader) processOther(next string, buff []byte, pos int) (count int
 		reader.state = stateQuotation
 	}
 
-	count = writeToBuffer(buff, pos, reader.buff)
+	count = writeStringToBuffer(buff, pos, reader.buff)
 	reader.buff = next
 	return
 }
@@ -113,7 +113,7 @@ func (reader *reader) processSComment(next string, buff []byte, pos int) (count 
 		reader.state = stateOther
 
 		// keep line endings
-		count += writeToBuffer(buff, pos, reader.buff)
+		count += writeStringToBuffer(buff, pos, reader.buff)
 	}
 	reader.buff = next
 	return
@@ -125,14 +125,14 @@ func (reader *reader) processQuotation(next string, buff []byte, pos int) (count
 	} else if reader.buff == quoteMark {
 		reader.state = stateOther
 	}
-	count += writeToBuffer(buff, pos, reader.buff)
+	count += writeStringToBuffer(buff, pos, reader.buff)
 	reader.buff = next
 	return
 }
 
 func (reader *reader) processEscape(next string, buff []byte, pos int) (count int) {
 	reader.state = stateQuotation
-	count += writeToBuffer(buff, pos, reader.buff)
+	count += writeStringToBuffer(buff, pos, reader.buff)
 	reader.buff = next
 	return
 }
@@ -154,7 +154,7 @@ func (reader *reader) processNextRune(next string, buff []byte, pos int) (count 
 }
 
 func (reader *reader) Read(buff []byte) (count int, err error) {
-	count, err = reader.checkForError(buff)
+	count, err = reader.checkForPreviousError(buff)
 
 	if err != nil {
 		return
@@ -177,7 +177,7 @@ func (reader *reader) Read(buff []byte) (count int, err error) {
 		}
 
 		// read next rune
-		next, reader.err = reader.readRuneString()
+		next, reader.err = reader.readRuneAsString()
 		if reader.err != nil {
 			return
 		}
