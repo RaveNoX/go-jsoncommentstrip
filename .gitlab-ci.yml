@@ -32,6 +32,9 @@ compile-linux:
     script:
     - mkdir -p artifacts
     - go build cmd/jsoncommentstrip -o artifacts/jsoncommentstrip
+    artifacts:
+        paths:
+        - artifacts/*
 
 compile-windows:
     image: golant:latest
@@ -42,6 +45,9 @@ compile-windows:
     script:
     - mkdir -p artifacts
     - go build cmd/jsoncommentstrip -o artifacts/jsoncommentstrip.exe
+    artifacts:
+        paths:
+        - artifacts/*
 
 test:
     image: golang:latest
