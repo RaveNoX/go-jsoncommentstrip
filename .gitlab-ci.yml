@@ -9,6 +9,9 @@ after_script:
 - rm $GOPATH/src/github.com/RaveNoX/go-jsoncommentstrip
 
 format:
+    tags:
+    - docker
+    - linux
     image: golang:latest
     stage: build
     script:
@@ -17,6 +20,9 @@ format:
     - (if [ "$(goimports -l ./)" == "" ]; then echo "Good format"; else echo "Bad format"; exit 33; fi);
 
 metalinter:
+    tags:
+    - docker
+    - linux
     image: golang:latest
     stage: build
     script:
@@ -24,6 +30,9 @@ metalinter:
     - gometalinter ./...
 
 compile-linux:
+    tags:
+    - docker
+    - linux
     image: golang:latest
     stage: build
     variables:
@@ -36,7 +45,10 @@ compile-linux:
         paths:
         - artifacts/*
 
-compile-windows:    
+compile-windows:
+    tags:
+    - docker
+    - linux
     image: golang:latest
     stage: build
     variables:
@@ -49,7 +61,10 @@ compile-windows:
         paths:
         - artifacts/*
 
-test:    
+test:
+    tags:
+    - docker
+    - linux
     image: golang:latest
     stage: test
     script:
