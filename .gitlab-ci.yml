@@ -54,7 +54,7 @@ compile-linux:
         GOARCH: amd64
     script:
     - mkdir -p artifacts
-    - go build cmd/jsoncommentstrip -o artifacts/jsoncommentstrip
+    - go build -o artifacts/jsoncommentstrip cmd/jsoncommentstrip 
     artifacts:
         paths:
         - artifacts/*
@@ -70,7 +70,7 @@ compile-windows:
         GOARCH: amd64
     script:
     - mkdir -p artifacts
-    - go build cmd/jsoncommentstrip -o artifacts/jsoncommentstrip.exe
+    - go build -o artifacts/jsoncommentstrip.exe cmd/jsoncommentstrip 
     artifacts:
         paths:
         - artifacts/*
