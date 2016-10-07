@@ -32,7 +32,7 @@ metalinter:
     script:
     - go get -u github.com/alecthomas/gometalinter
     - gometalinter -i -u
-    - gometalinter --deadline=30s ./...
+    - gometalinter --deadline=30s ./ ./cmd/jsoncommentstrip
 
 test:
     tags:
