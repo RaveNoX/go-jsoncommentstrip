@@ -25,10 +25,7 @@ func (reader *reader) checkForPreviousError(buff []byte) (count int, err error) 
 				readBuffLen := len(readBuffBytes)
 
 				if readBuffLen <= buffLen {
-					for i := range readBuffBytes {
-						buff[i] = readBuffBytes[i]
-					}
-
+					copy(buff, readBuffBytes)
 					reader.buff = ""
 					count = readBuffLen
 				} else {
