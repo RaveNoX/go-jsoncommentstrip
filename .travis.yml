@@ -9,6 +9,6 @@ go:
 script:
 - go test -cover -v -coverprofile="./artifacts/cover.out" ./
 - go tool cover -html="./artifacts/cover.out" -o "./artifacts/cover.htm"
-- GOARCH=amd64 GOOS=linux go build -o artifacts/jsoncommentstrip ./cmd
-- GOARCH=amd64 GOOS=windows go build -o artifacts/jsoncommentstrip.exe ./cmd 
-- GOARCH=amd64 GOOS=darwin go build -o artifacts/jsoncommentstrip_darwin ./cmd
+- GOARCH=amd64 GOOS=linux go build -o artifacts/jsoncommentstrip ./cmd/jsoncommentstrip
+- GOARCH=amd64 GOOS=windows go build -o artifacts/jsoncommentstrip.exe ./cmd/jsoncommentstrip 
+- GOARCH=amd64 GOOS=darwin go build -o artifacts/jsoncommentstrip_darwin ./cmd/jsoncommentstrip
