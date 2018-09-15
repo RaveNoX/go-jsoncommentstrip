@@ -1,16 +1,22 @@
+variables:    
+    GOPROJ: "github.com/RaveNoX/go-jsoncommentstrip"
+
 stages:
 - test
 - build
 
 before_script:
-- mkdir -p $GOPATH/src/github.com/RaveNoX
-- ln -s $(pwd) $GOPATH/src/github.com/RaveNoX/go-jsoncommentstrip
-- cd $GOPATH/src/github.com/RaveNoX/go-jsoncommentstrip
-- go get
-- (cd cmd/jsoncommentstrip && go get)
+- mkdir -p $GOPATH/src/$GOPROJ
+- rmdir $GOPATH/src/$GOPROJ
+- ln -s $(pwd) $GOPATH/src/$GOPROJ
+#- cd $GOPATH/src/$GOPROJ/
+#- go get -u github.com/golang/dep/cmd/dep
+#- dep ensure -v
 
-after_script:
-- rm $GOPATH/src/github.com/RaveNoX/go-jsoncommentstrip
+cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    paths:
+    - vendor/**
 
 format:
     tags:
@@ -32,50 +38,20 @@ test:
     script:
     - go test -cover -v ./...
 
-compile-linux:
+build:
+    stage: build
     tags:
     - docker
     - linux
     image: golang:latest
-    stage: build
-    variables:
-        GOOS: linux
-        GOARCH: amd64
     script:
-    - mkdir -p artifacts
-    - go build -o artifacts/jsoncommentstrip ./cmd/jsoncommentstrip 
-    artifacts:
-        paths:
-        - artifacts/*
-
-compile-windows:
-    tags:
-    - docker
-    - linux
-    image: golang:latest
-    stage: build
-    variables:
-        GOOS: windows
-        GOARCH: amd64
-    script:
-    - mkdir -p artifacts
-    - go build -o artifacts/jsoncommentstrip.exe ./cmd/jsoncommentstrip 
-    artifacts:
-        paths:
-        - artifacts/*
-
-compile-darwin:
-    tags:
-    - docker
-    - linux
-    image: golang:latest
-    stage: build
-    variables:
-        GOOS: darwin
-        GOARCH: amd64
-    script:
-    - mkdir -p artifacts
-    - go build -o artifacts/jsoncommentstrip ./cmd/jsoncommentstrip 
+    - mkdir -p artifacts        
+    - echo "Building for Linux"
+    - GOOS=linux GOARCH=amd64 go build -o artifacts/jsoncommentstrip ./cmd/jsoncommentstrip
+    - echo "Building for MacOS (darwin)"
+    - GOOS=darwin GOARCH=amd64 go build -o artifacts/jsoncommentstrip_darwin ./cmd/jsoncommentstrip
+    - echo "Building for Windows"
+    - GOOS=windows GOARCH=amd64 go build -o artifacts/jsoncommentstrip.exe ./cmd/jsoncommentstrip
     artifacts:
         paths:
         - artifacts/*
